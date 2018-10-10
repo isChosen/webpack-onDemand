@@ -3,15 +3,5 @@
     "@babel/preset-env",
     "@babel/preset-react"
   ],
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    [
-      "import",
-      {
-        "libraryName": "antd",
-        "libraryDirectory": "es",
-        "style": "css"
-      }
-    ]
-  ]
+  "plugins": ["@babel/plugin-syntax-dynamic-import"]
 }

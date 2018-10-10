@@ -1,8 +1,8 @@
 /**
  * @Author: detcx 
  * @Date: 2018-09-30 09:44:59 
- * @Last Modified by: Chosen
- * @Last Modified time: 2018-10-10 19:05:15
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-10 22:57:46
  * @description development configuration
  */
 
@@ -12,7 +12,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'development', // development production
-  entry: './src/index.js',
+  entry: './src/index-v3.js',
   output: {
     filename: 'js/[name].bundle.js',
     chunkFilename: 'js/[name].[chunkhash:6].js', // 'js/[name].bundle.js'
@@ -38,7 +38,6 @@ module.exports = {
   devServer: {
     open: true,
     port: '8053',
-    hot: true,
     https: false,
     publicPath: '/',
     contentBase: path.resolve(__dirname, 'dist'),
