@@ -7538,7 +7538,7 @@ wbuf@^1.1.0, wbuf@^1.7.2:
 
 webpack-bundle-analyzer@^3.0.2:
   version "3.0.2"
-  resolved "http://registry.npm.taobao.org/webpack-bundle-analyzer/download/webpack-bundle-analyzer-3.0.2.tgz#22f19ea6d1b5a15fd7a90baae0bc0f39bd1e4d48"
+  resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-3.0.2.tgz#22f19ea6d1b5a15fd7a90baae0bc0f39bd1e4d48"
   dependencies:
     acorn "^5.7.3"
     bfj "^6.1.1"

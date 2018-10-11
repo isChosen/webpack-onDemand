@@ -16,7 +16,7 @@ const getAsyncComponent = (load) => (
   }
 )
 
-function asyncComponent (importComponent) {
+const asyncComponent = (importComponent) => (
   class AsyncComponent2 extends Component {
     constructor(props) {
       super(props);
@@ -26,15 +26,14 @@ function asyncComponent (importComponent) {
     }
     async componentDidMount() {
       const { default: component } = await importComponent();
-      this.setState({ component });
+      this.setState({ component: component });
     }
     render() {
       const C = this.state.component;
       return C ? <C {...this.props} /> : null;
     }
   }
-  return AsyncComponent2;
-}
+)
 
 export {
   getAsyncComponent,
