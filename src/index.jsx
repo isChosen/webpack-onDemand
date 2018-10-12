@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 
 
-const routes = {
+const rootRoute = {
   path: '/',
   getComponent(nextState, cb) {
     require.ensure([], require => {
@@ -11,7 +11,7 @@ const routes = {
     }, 'chunk-app');
   },
   indexRoute: {
-    getComponent(nextState, cb) {
+    getComponent(ns, cb) {
       require.ensure([], require => {
         cb(null, require('./Login').default);
       }, 'chunk-login');
@@ -20,7 +20,7 @@ const routes = {
   childRoutes: [
     {
       path: 'home',
-      getComponent(nextState, cb) {
+      getComponent(ns, cb) {
         require.ensure([], require => {
           cb(null, require('./Home').default);
         }, 'chunk-home');
@@ -28,13 +28,13 @@ const routes = {
     },
     {
       path: 'product',
-      getComponent(nextState, cb) {
+      getComponent(ns, cb) {
         require.ensure([], require => {
           cb(null, require('./Product').default);
         }, 'chunk-product');
       },
       indexRoute: {
-        getComponent(nextState, cb) {
+        getComponent(ns, cb) {
           require.ensure([], require => {
             cb(null, require('./ProductA').default);
           }, 'chunk-proda');
@@ -43,7 +43,7 @@ const routes = {
       childRoutes: [
         {
           path: 'proda',
-          getComponent(nextState, cb) {
+          getComponent(ns, cb) {
             require.ensure([], require => {
               cb(null, require('./ProductA').default);
             }, 'chunk-proda');
@@ -51,7 +51,7 @@ const routes = {
         },
         {
           path: 'prodb',
-          getComponent(nextState, cb) {
+          getComponent(ns, cb) {
             require.ensure([], require => {
               cb(null, require('./ProductB').default);
             }, 'chunk-prodb');
@@ -61,7 +61,7 @@ const routes = {
     },
     {
       path: 'about',
-      getComponent(nextState, cb) {
+      getComponent(ns, cb) {
         require.ensure([], require => {
           cb(null, require('./About').default);
         }, 'chunk-about');
@@ -71,7 +71,7 @@ const routes = {
     },
     {
       path: '*',
-      getComponent(nextState, cb) {
+      getComponent(ns, cb) {
         require.ensure([], require => {
           cb(null, require('./NoMatch').default);
         }, 'chunk-nomatch');
@@ -80,16 +80,17 @@ const routes = {
   ]
 }
 
-// 进入路由的 hook
+
+// 进入路由 hook
 function handleEnter(o) {
   console.log(`enter -> ${o.location.pathname}`)
 }
-// 离开路由的 hook
+// 离开路由 hook
 function handleLeave(T) {
   console.log(`leave -> ${T.location.pathname}`);
 }
 
 ReactDom.render(
-  <Router routes={routes} history={browserHistory} />,
+  <Router routes={rootRoute} history={browserHistory} />,
   document.getElementById('root')
 )
