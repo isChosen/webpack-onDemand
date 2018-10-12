@@ -2,7 +2,7 @@
  * @Author: detcx 
  * @Date: 2018-09-30 09:44:59 
  * @Last Modified by: Chosen
- * @Last Modified time: 2018-10-11 17:54:41
+ * @Last Modified time: 2018-10-12 10:42:42
  * @description development configuration
  */
 
@@ -16,7 +16,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = {
   mode: 'development', // development production
   devtool: false,
-  entry: './src/index.js',
+  entry: './src/index.jsx',
   output: {
     filename: 'js/[name].bundle.js',
     chunkFilename: 'js/[name].[chunkhash:6].js', // 'js/[id].bundle[chunkhash:6].js'
