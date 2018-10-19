@@ -71,6 +71,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       title: 'Oh-webpack-onDemand',
+	  favicon: __dirname + '/favicon.ico',
       template: __dirname + '/index.html'
     }),
     new CleanWebpackPlugin(['dist'], {exclude: ['dll']}),
