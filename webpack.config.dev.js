@@ -2,7 +2,7 @@
  * @Author: detcx 
  * @Date: 2018-09-30 09:44:59 
  * @Last Modified by: Chosen
- * @Last Modified time: 2018-10-16 18:35:53
+ * @Last Modified time: 2018-11-02 17:37:16
  * @description development configuration
  */
 
@@ -16,7 +16,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = {
   mode: 'development', // development production
   devtool: false,
-  entry: './src/index.jsx',
+  entry: './src/entry.jsx',
   output: {
     filename: 'js/[name].bundle.js',
     chunkFilename: 'js/[name].[chunkhash:6].js', // 'js/[id].bundle[chunkhash:6].js'
@@ -36,9 +36,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?/,
-        exclude: path.resolve(__dirname, 'node_modules'),
-        // use: 'babel-loader'
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
         use: 'babel-loader'
       }
     ]
@@ -78,7 +77,7 @@ module.exports = {
     // scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
     /* new BundleAnalyzerPlugin({
-      analyzerPort: 8039,
+      analyzerPort: 2018,
       generateStatsFile: true
     }) */
   ]

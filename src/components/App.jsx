@@ -7,7 +7,7 @@ class App extends Component {
       <Fragment>
         <header>
           <h4>Our React Router 3 App</h4>
-          <nav><Link to='/home' >Home</Link> | <Link to='/product' >Product</Link> | <Link to='/about' >About</Link></nav>
+          <nav><Link to='/home' >Home</Link> | <Link to='/product' >Product</Link> | <Link to='/news' >News</Link> | <Link to='/about' >About</Link></nav>
         </header>
         <section
           style={{

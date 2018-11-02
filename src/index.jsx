@@ -1,3 +1,10 @@
+/*
+ * @Author: Chosen 
+ * @Date: 2018-11-02 17:08:04 
+ * @Last Modified by: Chosen
+ * @Last Modified time: 2018-11-02 17:08:34
+ * @Descriptions 对象形式
+ */
 import React from 'react';
 import ReactDom from 'react-dom';
 import { Router, browserHistory } from 'react-router';
@@ -7,13 +14,13 @@ const rootRoute = {
   path: '/',
   getComponent(nextState, cb) {
     require.ensure([], require => {
-      cb(null, require('./App').default);
+      cb(null, require('./components/App').default);
     }, 'chunk-app');
   },
   indexRoute: {
     getComponent(ns, cb) {
       require.ensure([], require => {
-        cb(null, require('./Login').default);
+        cb(null, require('./components/Login').default);
       }, 'chunk-login');
     }
   },
@@ -22,7 +29,7 @@ const rootRoute = {
       path: 'home',
       getComponent(ns, cb) {
         require.ensure([], require => {
-          cb(null, require('./Home').default);
+          cb(null, require('./components/Home').default);
         }, 'chunk-home');
       }
     },
@@ -30,40 +37,56 @@ const rootRoute = {
       path: 'product',
       getComponent(ns, cb) {
         require.ensure([], require => {
-          cb(null, require('./Product').default);
-        }, 'chunk-product');
+          cb(null, require('./components/Product').default);
+        }, 'chunk-product')
+      }
+    },
+    {
+      path: 'product/:id',
+      getComponent(ns, cb) {
+        require.ensure([], require => {
+          cb(null, require('./components/ProductDetail').default);
+        }, 'chunk-prodetail')
+      }
+    },
+    {
+      path: 'news',
+      getComponent(ns, cb) {
+        require.ensure([], require => {
+          cb(null, require('./components/News').default);
+        }, 'chunk-news');
       },
       indexRoute: {
         getComponent(ns, cb) {
           require.ensure([], require => {
-            cb(null, require('./ProductA').default);
-          }, 'chunk-proda');
+            cb(null, require('./components/NewsA').default);
+          }, 'chunk-newsa');
         }
       },
       childRoutes: [
         {
-          path: 'proda',
+          path: 'newsa',
           getComponent(ns, cb) {
             require.ensure([], require => {
-              cb(null, require('./ProductA').default);
-            }, 'chunk-proda');
+              cb(null, require('./components/NewsA').default);
+            }, 'chunk-newsa');
           }
         },
         {
-          path: 'prodb',
+          path: 'newsb',
           getComponent(ns, cb) {
             require.ensure([], require => {
-              cb(null, require('./ProductB').default);
-            }, 'chunk-prodb');
+              cb(null, require('./components/NewsB').default);
+            }, 'chunk-newsb');
           }
-        }
+        },
       ]
     },
     {
       path: 'about',
       getComponent(ns, cb) {
         require.ensure([], require => {
-          cb(null, require('./About').default);
+          cb(null, require('./components/About').default);
         }, 'chunk-about');
       },
       onEnter: handleEnter,
@@ -73,7 +96,7 @@ const rootRoute = {
       path: '*',
       getComponent(ns, cb) {
         require.ensure([], require => {
-          cb(null, require('./NoMatch').default);
+          cb(null, require('./components/NoMatch').default);
         }, 'chunk-nomatch');
       }
     },
