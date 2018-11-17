@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router';
 
-import appLess from '../less/app.less';
+import appLess from '../../static/less/app.less';
 
 class App extends Component {
   render() {

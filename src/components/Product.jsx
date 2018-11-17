@@ -21,7 +21,7 @@ class Product extends Component {
         textAlign: 'center',
         borderRadius: '3px',
         marginBottom: '10px',
-        border: '1px solid rgba(255, 87, 34, 0.65)'
+        border: '1px solid #F44336'
       }
     }
   }
@@ -34,6 +34,9 @@ class Product extends Component {
     const { list, style } = this.state;
     return (
       <div>
+        <h4>Product</h4>
+        <hr />
+        <br />
         {
           list.map((item, index) => (
             <Link

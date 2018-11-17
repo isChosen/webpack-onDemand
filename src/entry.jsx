@@ -2,13 +2,13 @@
  * @Author: Detcx 
  * @Date: 2018-11-02 17:08:38 
  * @Last Modified by: Detcx
- * @Last Modified time: 2018-11-17 11:28:11
+ * @Last Modified time: 2018-11-17 15:34:30
  * @Description: jsx 形式, 对应配置 ./components/RouteConf.jsx
  */
 import React from 'react';
 import ReactDom from 'react-dom';
 import App from './components/App';
-import * as routeConf from './components/RouteConf';
+import * as routeConf from './RouteConf';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 const rootRoute = (

@@ -5,7 +5,9 @@ class News extends Component {
   render() {
     return (
       <div>
-        <h5>News</h5>
+        <h4>News</h4>
+        <hr />
+        <br />
         <nav><Link to='/news/newsa' >news-a</Link> | <Link to='/news/newsb' >news-b</Link></nav>
         <div style={{padding: '10px', border: '1px solid #f00'}}>
           {this.props.children}

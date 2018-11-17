@@ -1,46 +1,46 @@
 const Login = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./Login').default);
+    cb(null, require('./components/Login').default);
   }, 'chunk-login');
 }
 const Home = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./Home').default);
+    cb(null, require('./components/Home').default);
   }, 'chunk-home');
 }
 const Product = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./Product').default);
+    cb(null, require('./components/Product').default);
   }, 'chunk-product');
 }
 const ProductDetail = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./ProductDetail').default);
+    cb(null, require('./components/ProductDetail').default);
   }, 'chunk-prodetail');
 }
 const News = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./News').default);
+    cb(null, require('./components/News').default);
   }, 'chunk-news');
 }
 const NewsA = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./NewsA').default);
+    cb(null, require('./components/NewsA').default);
   }, 'chunk-newsa');
 }
 const NewsB = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./NewsB').default);
+    cb(null, require('./components/NewsB').default);
   }, 'chunk-newsb');
 }
 const About = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./About').default);
+    cb(null, require('./components/About').default);
   }, 'chunk-about');
 }
 const NoMatch = (ns, cb) => {
   require.ensure([], require => {
-    cb(null, require('./NoMatch').default);
+    cb(null, require('./components/NoMatch').default);
   }, 'chunk-nomatch');
 }
 

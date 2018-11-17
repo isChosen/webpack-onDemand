@@ -1,17 +1,21 @@
+const os = require('os');
 const path = require("path");
 const webpack = require("webpack");
+const HappyPack = require('happypack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HappyThreadPool = HappyPack.ThreadPool({size: os.cpus().length - 1});
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin; // 可视化分析
 
 module.exports = {
   mode: "development",
   devtool: false,
   entry: "./src/entry.jsx", // 此处使用 jsx 语法文件作为入口
   output: {
-    filename: "js/[name].bundle[hash:6].js",
-    chunkFilename: "js/[name][chunkhash:6].js", // 'js/[id].bundle[chunkhash:6].js'
+    filename: "static/js/[name].bundle[hash:6].js",
+    chunkFilename: "static/js/[name][chunkhash:6].js", // 'js/[id].bundle[chunkhash:6].js'
     path: path.resolve(__dirname, "dist"),
     publicPath: "/"
   },
@@ -20,11 +24,11 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
+      name: true,
       chunks: "all",
       maxAsyncRequests: 15,
       maxInitialRequests: 10,
       automaticNameDelimiter: "-",
-      name: true,
       cacheGroups: {
         libs: {
           name: 'chunk-libs',
@@ -36,7 +40,7 @@ module.exports = {
           name: 'chunk-antd',
           test: /[\\/]node_modules[\\/]antd[\\/]/,
           priority: 20,
-          chunks: 'initial'
+          chunks: 'async'
         }
       }
     }
@@ -45,15 +49,33 @@ module.exports = {
     rules: [
       {
         test: /\.(jsx?|es6)$/,
-        exclude: /node_modules/,
-        use: "babel-loader"
+        exclude: path.resolve(__dirname, 'node_modules'),
+        use: 'happypack/loader?id=jsx'
       },
+      /* node_modules 引入的样式不需要模块化 */
       {
         test: /\.css$/,
+        include: [path.resolve(__dirname, 'node_modules')],
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader'
+          'happypack/loader?id=cssNodeModules'
+        ]
+      },
+      {
+        test: /\.less$/,
+        include: [path.resolve(__dirname, 'node_modules')],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'happypack/loader?id=lessNodeModules'
+        ]
+      },
+      /* 非 node_modules 样式模块化 */
+      {
+        test: /\.css$/,
+        exclude: [path.resolve(__dirname, 'node_modules')],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'happypack/loader?id=cssExcNodeModules'
         ]
       },
       {
@@ -61,16 +83,21 @@ module.exports = {
         exclude: [path.resolve(__dirname, 'node_modules')],
         use: [
           MiniCssExtractPlugin.loader,
+          'happypack/loader?id=lessExcNodeModules'
+        ]
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
           {
-            loader: 'css-loader',
+            loader: 'url-loader',
             options: {
-              modules: true,
-              importLoaders: 2,
-              localIdentName: '[local]-[hash:base64:4]'
+              fallback: 'file-loader',
+              limit: 8192,
+              name: '[name][hash:4].[ext]',
+              outputPath: 'static/images/'
             }
-          },
-          'postcss-loader',
-          'less-loader'
+          }
         ]
       }
     ]
@@ -94,28 +121,112 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.HotModuleReplacementPlugin(), // 热模块替换
+    new webpack.optimize.ModuleConcatenationPlugin(), // scope hoisting
+    new CleanWebpackPlugin(['dist'], {exclude: ['dll']}), // 清理时排除 dist/dll
+    // 动态链接库
     new webpack.DllReferencePlugin({
       manifest: require("./dist/dll/react.manifest.json")
     }),
     new webpack.DllReferencePlugin({
       manifest: require("./dist/dll/polyfill.manifest.json")
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new MiniCssExtractPlugin({ // 分离 css
-      filename: 'css/[name][contenthash:6].css',
-      chunkFilename: 'css/[id][contenthash:6].css' // 供应商(vendor)样式文件
+    // 分离样式表 css
+    new MiniCssExtractPlugin({
+      filename: 'static/css/[name][contenthash:6].css',
+      chunkFilename: 'static/css/[id][contenthash:6].css' // 供应商(vendor)样式文件
     }),
+    // 模板
     new HtmlWebpackPlugin({
       filename: "index.html",
       title: "webpack-onDemand",
       favicon: __dirname + "/favicon.ico",
       template: __dirname + "/index.html"
     }),
-    new CleanWebpackPlugin(["dist"], { exclude: ["dll"] }),
-    new webpack.optimize.ModuleConcatenationPlugin(), // scope hoisting
+    // 多进程
+    new HappyPack({
+      id: 'jsx',
+      loaders: ['babel-loader?cacheDirectory'],
+      threadPool: HappyThreadPool
+    }),
+    new HappyPack({
+      id: 'cssNodeModules',
+      loaders: [
+        'css-loader',
+        'postcss-loader'
+      ],
+      threadPool: HappyThreadPool
+    }),
+    new HappyPack({
+      id: 'lessNodeModules',
+      loaders: [
+        'css-loader',
+        'postcss-loader',
+        'less-loader'
+      ],
+      threadPool: HappyThreadPool
+    }),
+    new HappyPack({
+      id: 'cssExcNodeModules',
+      loaders: [
+        {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            importLoaders: 1,
+            localIdentName: '[local]-[hash:base64:4]'
+          }
+        },
+        'postcss-loader',
+      ],
+      threadPool: HappyThreadPool
+    }),
+    new HappyPack({
+      id: 'lessExcNodeModules',
+      loaders: [
+        {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            importLoaders: 2,
+            localIdentName: '[local]-[hash:base64:4]'
+          }
+        },
+        'postcss-loader',
+        'less-loader'
+      ],
+      threadPool: HappyThreadPool
+    }),
+    // 复制静态资源
+    new CopyWebpackPlugin([
+      {
+        from: 'static/css/',
+        to: 'static/css/[name].[ext]',
+        toType: 'template'
+      },
+      {
+        from: 'static/fonts/',
+        to: 'static/fonts/',
+        toType: 'dir'
+      },
+      {
+        from: 'static/images/origin/',
+        to: 'static/images/origin/',
+        toType: 'dir'
+      },
+      {
+        from: 'static/libs',
+        to: 'static/libs',
+        toType: 'dir'
+      },
+
+    ]),
+    /*
+    // 可视化分析
     new BundleAnalyzerPlugin({
       analyzerPort: 2018,
       generateStatsFile: true
     })
+    */
   ]
 };

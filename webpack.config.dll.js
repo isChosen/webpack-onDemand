@@ -1,11 +1,9 @@
-const os = require('os');
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     // 将 React 相关的模块放到一个单独的动态链表库中
     react: ['react', 'react-dom'],
@@ -19,14 +17,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist/dll'),
     // 存放动态链接库的全局变量名称, 例如对于 react 来时就是 _dll_react,  加上 _dll_ 防止全局变量冲突
     library: '_dll_[name]'
-  },
-  optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: path.resolve(__dirname, 'dist/cache'),
-        parallel: os.cpus().length - 1
-      })
-    ]
   },
   plugins: [
     new CleanWebpackPlugin(['dist/dll/', 'dist/cache/']),
