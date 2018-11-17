@@ -19,9 +19,6 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     publicPath: "/"
   },
-  watchOptions: {
-    ignored: /node_modules/
-  },
   optimization: {
     splitChunks: {
       name: true,
