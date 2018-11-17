@@ -2,8 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: "development",
@@ -12,7 +12,7 @@ module.exports = {
   output: {
     filename: "js/[name].bundle[hash:6].js",
     chunkFilename: "js/[name][chunkhash:6].js", // 'js/[id].bundle[chunkhash:6].js'
-    path: path.resolve(__dirname, "dist"), // 打包后的目录，必须是绝对路径
+    path: path.resolve(__dirname, "dist"),
     publicPath: "/"
   },
   watchOptions: {
@@ -21,15 +21,57 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: "all",
-      automaticNameDelimiter: "-"
+      maxAsyncRequests: 15,
+      maxInitialRequests: 10,
+      automaticNameDelimiter: "-",
+      name: true,
+      cacheGroups: {
+        libs: {
+          name: 'chunk-libs',
+          test: /[\\/]node_modules[\\/]/,
+          priority: 10,
+          chunks: 'initial'
+        },
+        antd: {
+          name: 'chunk-antd',
+          test: /[\\/]node_modules[\\/]antd[\\/]/,
+          priority: 20,
+          chunks: 'initial'
+        }
+      }
     }
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(jsx?|es6)$/,
         exclude: /node_modules/,
         use: "babel-loader"
+      },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader'
+        ]
+      },
+      {
+        test: /\.less$/,
+        exclude: [path.resolve(__dirname, 'node_modules')],
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 2,
+              localIdentName: '[local]-[hash:base64:4]'
+            }
+          },
+          'postcss-loader',
+          'less-loader'
+        ]
       }
     ]
   },
@@ -59,17 +101,21 @@ module.exports = {
       manifest: require("./dist/dll/polyfill.manifest.json")
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin({ // 分离 css
+      filename: 'css/[name][contenthash:6].css',
+      chunkFilename: 'css/[id][contenthash:6].css' // 供应商(vendor)样式文件
+    }),
     new HtmlWebpackPlugin({
       filename: "index.html",
-      title: "Oh-webpack-onDemand",
+      title: "webpack-onDemand",
       favicon: __dirname + "/favicon.ico",
       template: __dirname + "/index.html"
     }),
     new CleanWebpackPlugin(["dist"], { exclude: ["dll"] }),
-    new webpack.optimize.ModuleConcatenationPlugin() // scope hoisting
-    /* new BundleAnalyzerPlugin({
+    new webpack.optimize.ModuleConcatenationPlugin(), // scope hoisting
+    new BundleAnalyzerPlugin({
       analyzerPort: 2018,
       generateStatsFile: true
-    }) */
+    })
   ]
 };

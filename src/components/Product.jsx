@@ -3,11 +3,12 @@ import { Link } from 'react-router';
 import Item from 'antd/lib/list/Item';
 
 class Product extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       list: [
-        {name: 'javascript 权威指南', uid: 1, category: 'javascript'},
+        {name: 'javascript 高级程序设计', uid: 1, category: 'javascript'},
         {name: 'javascript 语言精粹', uid: 2, category: 'javascript'},
         {name: 'Java 编程思想', uid: 3, category: 'java'},
         {name: 'mysql 必知必会', uid: 4, category: 'db'}
@@ -24,6 +25,11 @@ class Product extends Component {
       }
     }
   }
+
+  componentDidMount() {
+    console.log('Item: ', Item);
+  }
+
   render() {
     const { list, style } = this.state;
     return (
@@ -42,7 +48,7 @@ class Product extends Component {
                 }
               }}
             >
-              {item.name} - {item.category}
+              {item.name}
             </Link>
           ))
         }

@@ -1,26 +1,21 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router';
 
+import appLess from '../less/app.less';
+
 class App extends Component {
   render() {
     return (
       <Fragment>
-        <header>
-          <h4>Our React Router 3 App</h4>
+        <header className={appLess.header} >
+          <b>Our React Router App</b>
           <nav><Link to='/home' >Home</Link> | <Link to='/product' >Product</Link> | <Link to='/news' >News</Link> | <Link to='/about' >About</Link></nav>
         </header>
-        <section
-          style={{
-            padding: '10px 5px',
-            margin: '10px 0',
-            minHeight: '200px',
-            border: '1px solid #999',
-            background: '#f7f7f7'
-          }}>
+        <section className={appLess.section} >
           { this.props.children }
         </section>
-        <footer>
-          <h4>footer</h4>
+        <footer className={appLess.footer} >
+          <b>footer</b>
         </footer>
       </Fragment>
     );

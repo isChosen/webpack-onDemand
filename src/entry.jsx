@@ -1,8 +1,8 @@
 /*
- * @Author: Chosen 
+ * @Author: Detcx 
  * @Date: 2018-11-02 17:08:38 
- * @Last Modified by: Chosen
- * @Last Modified time: 2018-11-02 17:09:37
+ * @Last Modified by: Detcx
+ * @Last Modified time: 2018-11-17 11:28:11
  * @Description: jsx 形式, 对应配置 ./components/RouteConf.jsx
  */
 import React from 'react';
