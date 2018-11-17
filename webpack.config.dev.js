@@ -210,8 +210,8 @@ module.exports = {
         toType: 'dir'
       },
       {
-        from: 'static/images/origin/',
-        to: 'static/images/origin/',
+        from: 'static/images/global/',
+        to: 'static/images/global/',
         toType: 'dir'
       },
       {
