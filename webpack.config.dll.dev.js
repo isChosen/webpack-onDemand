@@ -19,7 +19,7 @@ module.exports = {
     library: '_dll_[name]'
   },
   plugins: [
-    new CleanWebpackPlugin(['dist/dll/', 'dist/cache/']),
+    new CleanWebpackPlugin(['dist/dll/']),
     // 接入 DllPlugin
     new webpack.DllPlugin({
       // 动态链表库的全局变量名称, 和 output.library 一致
