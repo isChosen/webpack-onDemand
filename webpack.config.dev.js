@@ -15,7 +15,7 @@ module.exports = {
   entry: "./src/entry.jsx", // 此处使用 jsx 语法文件作为入口
   output: {
     filename: "bundle/[name].bundle[hash:6].js",
-    chunkFilename: "bundle/[name].bundle.[chunkhash:6].js",
+    chunkFilename: "bundle/[name].bundle[chunkhash:6].js",
     path: path.resolve(__dirname, "dist"),
     publicPath: "/" // 静态资源路径
   },
