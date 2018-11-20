@@ -8,10 +8,10 @@ class Product extends Component {
     super(props);
     this.state = {
       list: [
-        {name: 'javascript 高级程序设计', uid: 1, category: 'javascript'},
-        {name: 'javascript 语言精粹', uid: 2, category: 'javascript'},
+        {name: 'JavaScript 高级程序设计', uid: 1, category: 'javascript'},
+        {name: 'JavaScript 语言精粹', uid: 2, category: 'javascript'},
         {name: 'Java 编程思想', uid: 3, category: 'java'},
-        {name: 'mysql 必知必会', uid: 4, category: 'db'}
+        {name: 'MySQL 必知必会', uid: 4, category: 'db'}
       ],
       style: {
         display: 'block',

@@ -14,11 +14,12 @@ module.exports = {
   devtool: false,
   entry: "./src/entry.jsx", // 此处使用 jsx 语法文件作为入口
   output: {
-    filename: "static/js/[name].bundle[hash:6].js",
-    chunkFilename: "static/js/[name][chunkhash:6].js", // 'js/[id].bundle[chunkhash:6].js'
+    filename: "bundle/[name].bundle[hash:6].js",
+    chunkFilename: "bundle/[name].bundle.[chunkhash:6].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/"
+    publicPath: "/" // 静态资源路径
   },
+
   optimization: {
     splitChunks: {
       name: true,
@@ -42,6 +43,7 @@ module.exports = {
       }
     }
   },
+
   module: {
     rules: [
       {
@@ -128,10 +130,10 @@ module.exports = {
     new webpack.DllReferencePlugin({
       manifest: require("./dist/dll/polyfill.manifest.json")
     }),
-    // 分离样式表 css
+    // 分离 css
     new MiniCssExtractPlugin({
       filename: 'static/css/[name][contenthash:6].css',
-      chunkFilename: 'static/css/[id][contenthash:6].css' // 供应商(vendor)样式文件
+      chunkFilename: 'static/css/[name][contenthash:6].css' // 供应商(vendor)样式文件
     }),
     // 模板
     new HtmlWebpackPlugin({
@@ -215,10 +217,9 @@ module.exports = {
         from: 'static/libs',
         to: 'static/libs',
         toType: 'dir'
-      },
-
+      }
     ]),
-    /*
+    /* 
     // 可视化分析
     new BundleAnalyzerPlugin({
       analyzerPort: 2018,
