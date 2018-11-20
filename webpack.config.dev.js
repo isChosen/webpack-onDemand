@@ -48,7 +48,7 @@ module.exports = {
     rules: [
       {
         test: /\.(jsx?|es6)$/,
-        exclude: path.resolve(__dirname, 'node_modules'),
+        exclude: /(node_modules|bower_components)/,
         use: 'happypack/loader?id=jsx'
       },
       /* node_modules 引入的样式不需要模块化 */
@@ -120,6 +120,7 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.BannerPlugin('@CopyRight-Detcx'), // 无聊
     new webpack.HotModuleReplacementPlugin(), // 热模块替换
     new webpack.optimize.ModuleConcatenationPlugin(), // scope hoisting
     new CleanWebpackPlugin(['dist'], {exclude: ['dll']}), // 清理时排除 dist/dll
